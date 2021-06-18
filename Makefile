@@ -8,3 +8,12 @@ run:
 
 swag:
 	swag init --parseDependency -d ./internal/handler -o ./docs/swagger -g handler.go
+
+SCHEMA=./scripts
+DB='postgres://postgres:123matan123@127.0.0.1:5432/advertising_task?sslmode=disable'
+
+migrate_up:
+	migrate -path $(SCHEMA) -database $(DB) up
+
+migrate_down:
+	migrate -path $(SCHEMA) -database $(DB) down

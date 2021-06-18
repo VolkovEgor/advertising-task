@@ -1,9 +1,65 @@
 basePath: /api/
+definitions:
+  handler.response:
+    properties:
+      message:
+        type: string
+    type: object
+  model.Advert:
+    properties:
+      id:
+        type: integer
+      main_photo:
+        type: string
+      price:
+        type: integer
+      title:
+        type: string
+    type: object
 host: localhost:9000
 info:
   contact: {}
   description: API Server for Advertising Task
   title: Advertising Task
   version: "1.0"
-paths: {}
+paths:
+  /adverts:
+    get:
+      consumes:
+      - application/json
+      description: Get all adverts
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Advert'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Get All Adverts
+      tags:
+      - adverts
 swagger: "2.0"

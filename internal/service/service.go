@@ -1,8 +1,12 @@
 package service
 
-import "github.com/VolkovEgor/advertising-task/internal/repository"
+import (
+	"github.com/VolkovEgor/advertising-task/internal/model"
+	"github.com/VolkovEgor/advertising-task/internal/repository"
+)
 
 type Advert interface {
+	GetAll(page int) *model.ApiResponse
 }
 
 type Service struct {
@@ -10,5 +14,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Advert: NewAdvertService(repos.Advert),
+	}
 }
