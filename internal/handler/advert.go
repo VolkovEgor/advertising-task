@@ -9,6 +9,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	priceFieldName        = "price"
+	creationDateFieldName = "creation_date"
+	descOrder             = "desc"
+	ascOrder              = "asc"
+)
+
 func (h *Handler) initAdvertRoutes(api *echo.Group) {
 	restaurants := api.Group("/adverts")
 	{
@@ -23,6 +30,8 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Accept  json
 // @Produce  json
 // @Param page query string true "Page"
+// @Param sort query string false "Sort field"
+// @Param order query string false "Order"
 // @Success 200 {array} model.Advert
 // @Failure 400 {object} response
 // @Failure 404 {object} response
@@ -37,6 +46,22 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 		return SendError(ctx, response)
 	}
 
-	response = h.services.Advert.GetAll(page)
+	field := ctx.QueryParam("sort")
+	order := ctx.QueryParam("order")
+	var sortParams *model.SortParams
+
+	if field != "" {
+		if field != priceFieldName && field != creationDateFieldName || order != descOrder && order != ascOrder {
+			response.Error(http.StatusBadRequest, "Invalid sort params")
+			return SendError(ctx, response)
+		} else {
+			sortParams = &model.SortParams{
+				Field: field,
+				Order: order,
+			}
+		}
+	}
+
+	response = h.services.Advert.GetAll(page, sortParams)
 	return ctx.JSON(http.StatusOK, response.Data)
 }

@@ -34,6 +34,14 @@ paths:
         name: page
         required: true
         type: string
+      - description: Sort field
+        in: query
+        name: sort
+        type: string
+      - description: Order
+        in: query
+        name: order
+        type: string
       produces:
       - application/json
       responses:

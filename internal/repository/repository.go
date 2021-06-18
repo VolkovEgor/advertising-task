@@ -7,7 +7,7 @@ import (
 )
 
 type Advert interface {
-	GetAll(page int) ([]*model.Advert, error)
+	GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error)
 }
 
 type Repository struct {

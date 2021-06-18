@@ -17,9 +17,9 @@ func NewAdvertService(repo repository.Advert) *AdvertService {
 	return &AdvertService{repo: repo}
 }
 
-func (s *AdvertService) GetAll(page int) *model.ApiResponse {
+func (s *AdvertService) GetAll(page int, sortParams *model.SortParams) *model.ApiResponse {
 	r := &model.ApiResponse{}
-	adverts, err := s.repo.GetAll(page)
+	adverts, err := s.repo.GetAll(page, sortParams)
 	if err != nil {
 		r.Error(http.StatusInternalServerError, err.Error())
 		return r

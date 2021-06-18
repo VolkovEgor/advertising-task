@@ -20,13 +20,23 @@ func NewAdvertPg(db *sqlx.DB) *AdvertPg {
 	return &AdvertPg{db: db}
 }
 
-func (r *AdvertPg) GetAll(page int) ([]*model.Advert, error) {
+func (r *AdvertPg) GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error) {
 	var adverts []*model.Advert
+	var query string
 	start := (page - 1) * NumElementsInPage
 
-	query := fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
-		FROM %s AS a
-		LIMIT %d OFFSET %d`, advertsTable, NumElementsInPage, start)
+	if sortParams != nil {
+		sortParams.Field = "a." + sortParams.Field
+		query = fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
+			FROM %s AS a
+			ORDER BY %s %s
+			LIMIT %d OFFSET %d`, advertsTable, sortParams.Field, sortParams.Order,
+			NumElementsInPage, start)
+	} else {
+		query = fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
+			FROM %s AS a
+			LIMIT %d OFFSET %d`, advertsTable, NumElementsInPage, start)
+	}
 
 	rows, err := r.db.Query(query)
 	if err != nil {
