@@ -1,0 +1,9 @@
+basePath: /api/
+host: localhost:9000
+info:
+  contact: {}
+  description: API Server for Advertising Task
+  title: Advertising Task
+  version: "1.0"
+paths: {}
+swagger: "2.0"
