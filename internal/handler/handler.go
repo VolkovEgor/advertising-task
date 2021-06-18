@@ -1,9 +1,10 @@
 package handler
 
 import (
-	_ "advertising-task/docs/swagger"
-	"advertising-task/internal/service"
 	"net/http"
+
+	_ "github.com/VolkovEgor/advertising-task/docs/swagger"
+	"github.com/VolkovEgor/advertising-task/internal/service"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"

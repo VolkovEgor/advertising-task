@@ -1,6 +1,6 @@
 package service
 
-import "advertising-task/internal/repository"
+import "github.com/VolkovEgor/advertising-task/internal/repository"
 
 type Advert interface {
 }

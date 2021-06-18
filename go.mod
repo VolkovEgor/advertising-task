@@ -1,4 +1,4 @@
-module advertising-task
+module github.com/VolkovEgor/advertising-task
 
 go 1.15
 

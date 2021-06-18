@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"advertising-task/internal/handler"
-	"advertising-task/internal/repository"
-	"advertising-task/internal/repository/postgres"
-	"advertising-task/internal/service"
+	"github.com/VolkovEgor/advertising-task/internal/handler"
+	"github.com/VolkovEgor/advertising-task/internal/repository"
+	"github.com/VolkovEgor/advertising-task/internal/repository/postgres"
+	"github.com/VolkovEgor/advertising-task/internal/service"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
