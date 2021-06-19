@@ -11,13 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-const (
-	priceFieldName        = "price"
-	creationDateFieldName = "creation_date"
-	descOrder             = "desc"
-	ascOrder              = "asc"
-)
-
 func (h *Handler) initAdvertRoutes(api *echo.Group) {
 	adverts := api.Group("/adverts")
 	{
@@ -34,8 +27,7 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Accept  json
 // @Produce  json
 // @Param page query string true "Page"
-// @Param sort query string false "Sort field"
-// @Param order query string false "Order"
+// @Param sort query string false "Sort field and order"
 // @Success 200 {array} model.Advert
 // @Failure 400 {object} response
 // @Failure 404 {object} response
@@ -48,25 +40,15 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 		return SendError(ctx, http.StatusBadRequest, ErrWrongPageNumber)
 	}
 
-	field := ctx.QueryParam("sort")
-	order := ctx.QueryParam("order")
-	var sortParams *model.SortParams
-
-	if field != "" && order != "" {
-		if field != priceFieldName && field != creationDateFieldName || order != descOrder && order != ascOrder {
-			return SendError(ctx, http.StatusBadRequest, ErrWrongSortParams)
-		} else {
-			sortParams = &model.SortParams{
-				Field: field,
-				Order: order,
-			}
-		}
-	}
-
-	adverts, err := h.services.Advert.GetAll(page, sortParams)
+	sort := ctx.QueryParam("sort")
+	adverts, err := h.services.Advert.GetAll(page, sort)
 	if err != nil {
+		if err == ErrWrongSortParams {
+			return SendError(ctx, http.StatusBadRequest, err)
+		}
 		return SendError(ctx, http.StatusInternalServerError, err)
 	}
+
 	return ctx.JSON(http.StatusOK, adverts)
 }
 
@@ -104,6 +86,7 @@ func (h *Handler) getAdvertById(ctx echo.Context) error {
 	if err != nil {
 		return SendError(ctx, http.StatusInternalServerError, err)
 	}
+
 	return ctx.JSON(http.StatusOK, advert)
 }
 

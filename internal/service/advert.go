@@ -1,11 +1,19 @@
 package service
 
 import (
+	"strings"
 	"time"
 
 	. "github.com/VolkovEgor/advertising-task/internal/error"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
+)
+
+const (
+	sortPriceDesc = "price_desc"
+	sortPriceAsc  = "price_asc"
+	sortDateDesc  = "date_desc"
+	sortDateAsc   = "date_asc"
 )
 
 type Map map[string]interface{}
@@ -18,8 +26,25 @@ func NewAdvertService(repo repository.Advert) *AdvertService {
 	return &AdvertService{repo: repo}
 }
 
-func (s *AdvertService) GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error) {
-	return s.repo.GetAll(page, sortParams)
+func (s *AdvertService) GetAll(page int, sort string) ([]*model.Advert, error) {
+	var sortField, order string
+
+	if sort != "" {
+		switch sort {
+		case sortPriceDesc, sortPriceAsc:
+			sortField = "price"
+			order = parseOrder(sort)
+
+		case sortDateDesc, sortDateAsc:
+			sortField = "creation_date"
+			order = parseOrder(sort)
+
+		default:
+			return nil, ErrWrongSortParams
+		}
+	}
+
+	return s.repo.GetAll(page, sortField, order)
 }
 
 func (s *AdvertService) GetById(advertId int, fields bool) (*model.DetailedAdvert, error) {
@@ -52,4 +77,9 @@ func (s *AdvertService) Create(advert *model.DetailedAdvert) (int, error) {
 	}
 
 	return advertId, nil
+}
+
+func parseOrder(sort string) string {
+	slice := strings.Split(sort, "_")
+	return slice[len(slice)-1]
 }

@@ -47,14 +47,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "Sort field",
+                        "description": "Sort field and order",
                         "name": "sort",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Order",
-                        "name": "order",
                         "in": "query"
                     }
                 ],

@@ -69,13 +69,9 @@ paths:
         name: page
         required: true
         type: string
-      - description: Sort field
+      - description: Sort field and order
         in: query
         name: sort
-        type: string
-      - description: Order
-        in: query
-        name: order
         type: string
       produces:
       - application/json

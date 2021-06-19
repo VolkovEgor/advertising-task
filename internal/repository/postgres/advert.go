@@ -23,17 +23,17 @@ func NewAdvertPg(db *sqlx.DB) *AdvertPg {
 	return &AdvertPg{db: db}
 }
 
-func (r *AdvertPg) GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error) {
+func (r *AdvertPg) GetAll(page int, sortField, order string) ([]*model.Advert, error) {
 	var adverts []*model.Advert
 	var query string
 	start := (page - 1) * NumElementsInPage
 
-	if sortParams != nil {
-		sortParams.Field = "a." + sortParams.Field
+	if sortField != "" && order != "" {
+		sortField = "a." + sortField
 		query = fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
 			FROM %s AS a
 			ORDER BY %s %s
-			LIMIT %d OFFSET %d`, advertsTable, sortParams.Field, sortParams.Order,
+			LIMIT %d OFFSET %d`, advertsTable, sortField, order,
 			NumElementsInPage, start)
 	} else {
 		query = fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
