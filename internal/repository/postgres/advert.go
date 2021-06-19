@@ -1,6 +1,8 @@
 package postgres
 
 import (
+	"strings"
+
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/lib/pq"
 
@@ -82,4 +84,22 @@ func (r *AdvertPg) GetById(advertId int, fields bool) (*model.DetailedAdvert, er
 	}
 
 	return advert, err
+}
+
+func (r *AdvertPg) Create(advert *model.DetailedAdvert) (int, error) {
+	var advertId int
+	photos := strings.Join(advert.Photos, `", "`)
+	photos = `{"` + photos + `"}`
+
+	query := fmt.Sprintf(
+		`INSERT INTO %s
+		(title, description, photos, price, creation_date)
+		VALUES ($1, $2, $3, $4, $5) RETURNING id`, advertsTable)
+
+	row := r.db.QueryRow(query, advert.Title, advert.Description, photos, advert.Price, advert.CreationDate)
+	if err := row.Scan(&advertId); err != nil {
+		return 0, err
+	}
+
+	return advertId, nil
 }

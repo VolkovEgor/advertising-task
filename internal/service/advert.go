@@ -2,6 +2,7 @@ package service
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
@@ -39,5 +40,25 @@ func (s *AdvertService) GetById(advertId int, fields bool) *model.ApiResponse {
 	}
 
 	r.Set(http.StatusOK, "OK", Map{"advert": advert})
+	return r
+}
+
+func (s *AdvertService) Create(advert *model.DetailedAdvert) *model.ApiResponse {
+	r := &model.ApiResponse{}
+
+	if len(advert.Title) > 200 || len(advert.Description) > 1000 || len(advert.Photos) > 3 || advert.Price < 0 {
+		r.Error(http.StatusBadRequest, "Invalid input data")
+		return r
+	}
+
+	advert.CreationDate = time.Now().Unix()
+
+	advertId, err := s.repo.Create(advert)
+	if err != nil {
+		r.Error(http.StatusInternalServerError, err.Error())
+		return r
+	}
+
+	r.Set(http.StatusOK, "OK", Map{"advertId": advertId})
 	return r
 }
