@@ -44,7 +44,16 @@ func (s *AdvertService) GetAll(page int, sort string) ([]*model.Advert, error) {
 		}
 	}
 
-	return s.repo.GetAll(page, sortField, order)
+	adverts, err := s.repo.GetAll(page, sortField, order)
+	if err != nil {
+		return nil, err
+	}
+
+	if adverts == nil {
+		return nil, ErrWrongPageNumber
+	}
+
+	return adverts, nil
 }
 
 func (s *AdvertService) GetById(advertId int, fields bool) (*model.DetailedAdvert, error) {
@@ -52,7 +61,6 @@ func (s *AdvertService) GetById(advertId int, fields bool) (*model.DetailedAdver
 }
 
 func (s *AdvertService) Create(advert *model.DetailedAdvert) (int, error) {
-
 	if advert.Title == "" || len(advert.Title) > 200 {
 		return 0, ErrWrongTitle
 	}
