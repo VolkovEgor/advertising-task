@@ -8,6 +8,7 @@ import (
 
 type Advert interface {
 	GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error)
+	GetById(advertId int, fields bool) (*model.DetailedAdvert, error)
 }
 
 type Repository struct {

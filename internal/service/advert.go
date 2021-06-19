@@ -28,3 +28,16 @@ func (s *AdvertService) GetAll(page int, sortParams *model.SortParams) *model.Ap
 	r.Set(http.StatusOK, "OK", Map{"adverts": adverts})
 	return r
 }
+
+func (s *AdvertService) GetById(advertId int, fields bool) *model.ApiResponse {
+	r := &model.ApiResponse{}
+
+	advert, err := s.repo.GetById(advertId, fields)
+	if err != nil {
+		r.Error(http.StatusInternalServerError, err.Error())
+		return r
+	}
+
+	r.Set(http.StatusOK, "OK", Map{"advert": advert})
+	return r
+}

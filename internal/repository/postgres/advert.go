@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"github.com/VolkovEgor/advertising-task/internal/model"
+	"github.com/lib/pq"
 
 	"fmt"
 
@@ -56,4 +57,29 @@ func (r *AdvertPg) GetAll(page int, sortParams *model.SortParams) ([]*model.Adve
 	}
 
 	return adverts, err
+}
+
+func (r *AdvertPg) GetById(advertId int, fields bool) (*model.DetailedAdvert, error) {
+	var err error
+	advert := &model.DetailedAdvert{}
+
+	if fields {
+		query := fmt.Sprintf(`SELECT a.id, a.title, a.description, a.photos, a.price
+		FROM %s AS a
+		WHERE a.id = $1`, advertsTable)
+
+		row := r.db.QueryRow(query, advertId)
+		err = row.Scan(&advert.Id, &advert.Title, &advert.Description,
+			pq.Array(&advert.Photos), &advert.Price)
+	} else {
+		advert.Photos = make([]string, 1)
+		query := fmt.Sprintf(`SELECT a.id, a.title, a.photos[1], a.price
+		FROM %s AS a
+		WHERE a.id = $1`, advertsTable)
+
+		row := r.db.QueryRow(query, advertId)
+		err = row.Scan(&advert.Id, &advert.Title, &advert.Photos[0], &advert.Price)
+	}
+
+	return advert, err
 }

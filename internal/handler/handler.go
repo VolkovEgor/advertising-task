@@ -15,6 +15,10 @@ type response struct {
 	Message string `json:"message"`
 }
 
+type idResponse struct {
+	Id int `json:"id"`
+}
+
 type Handler struct {
 	services *service.Service
 }

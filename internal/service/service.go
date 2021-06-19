@@ -7,6 +7,7 @@ import (
 
 type Advert interface {
 	GetAll(page int, sortParams *model.SortParams) *model.ApiResponse
+	GetById(advertId int, fields bool) *model.ApiResponse
 }
 
 type Service struct {

@@ -10,8 +10,8 @@ type Advert struct {
 type DetailedAdvert struct {
 	Id           int      `json:"id" bd:"id"`
 	Title        string   `json:"title" bd:"title"`
-	Description  string   `json:"description" bd:"description"`
+	Description  string   `json:"description,omitempty" bd:"description"`
 	Photos       []string `json:"photos" bd:"photos"`
 	Price        int      `json:"price" bd:"price"`
-	CreationDate int64    `json:"creation_date" bd:"creation_date"`
+	CreationDate int64    `json:"creation_date,omitempty" bd:"creation_date"`
 }
