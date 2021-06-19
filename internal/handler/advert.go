@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	. "github.com/VolkovEgor/advertising-task/internal/error"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/asaskevich/govalidator"
 
@@ -42,11 +43,9 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Failure default {object} response
 // @Router /adverts [get]
 func (h *Handler) getAdverts(ctx echo.Context) error {
-	response := &model.ApiResponse{}
 	page, err := strconv.Atoi(ctx.QueryParam("page"))
 	if err != nil || page == 0 {
-		response.Error(http.StatusBadRequest, "Invalid page number")
-		return SendError(ctx, response)
+		return SendError(ctx, http.StatusBadRequest, ErrWrongPageNumber)
 	}
 
 	field := ctx.QueryParam("sort")
@@ -55,8 +54,7 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 
 	if field != "" && order != "" {
 		if field != priceFieldName && field != creationDateFieldName || order != descOrder && order != ascOrder {
-			response.Error(http.StatusBadRequest, "Invalid sort params")
-			return SendError(ctx, response)
+			return SendError(ctx, http.StatusBadRequest, ErrWrongSortParams)
 		} else {
 			sortParams = &model.SortParams{
 				Field: field,
@@ -65,8 +63,11 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 		}
 	}
 
-	response = h.services.Advert.GetAll(page, sortParams)
-	return ctx.JSON(http.StatusOK, response.Data)
+	adverts, err := h.services.Advert.GetAll(page, sortParams)
+	if err != nil {
+		return SendError(ctx, http.StatusInternalServerError, err)
+	}
+	return ctx.JSON(http.StatusOK, adverts)
 }
 
 // @Summary Get Advert By Id
@@ -84,12 +85,10 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 // @Failure default {object} response
 // @Router /adverts/{aid} [get]
 func (h *Handler) getAdvertById(ctx echo.Context) error {
-	response := &model.ApiResponse{}
 
 	advertId, err := strconv.Atoi(ctx.Param("aid"))
 	if err != nil || advertId == 0 {
-		response.Error(http.StatusBadRequest, "Invalid advertId")
-		return SendError(ctx, response)
+		return SendError(ctx, http.StatusBadRequest, ErrWrongAdvertId)
 	}
 
 	var boolFields bool
@@ -97,13 +96,15 @@ func (h *Handler) getAdvertById(ctx echo.Context) error {
 	if fields != "" {
 		boolFields, err = strconv.ParseBool(fields)
 		if err != nil {
-			response.Error(http.StatusBadRequest, "Invalid fields parameter")
-			return SendError(ctx, response)
+			return SendError(ctx, http.StatusBadRequest, ErrWrongFieldsParam)
 		}
 	}
 
-	response = h.services.Advert.GetById(advertId, boolFields)
-	return ctx.JSON(http.StatusOK, response.Data)
+	advert, err := h.services.Advert.GetById(advertId, boolFields)
+	if err != nil {
+		return SendError(ctx, http.StatusInternalServerError, err)
+	}
+	return ctx.JSON(http.StatusOK, advert)
 }
 
 type advertInput struct {
@@ -127,17 +128,14 @@ type advertInput struct {
 // @Failure default {object} response
 // @Router /adverts [post]
 func (h *Handler) createAdvert(ctx echo.Context) error {
-	response := &model.ApiResponse{}
 	var input advertInput
 
 	if err := ctx.Bind(&input); err != nil {
-		response.Error(http.StatusBadRequest, err.Error())
-		return SendError(ctx, response)
+		return SendError(ctx, http.StatusBadRequest, err)
 	}
 
 	if _, err := govalidator.ValidateStruct(input); err != nil {
-		response.Error(http.StatusBadRequest, err.Error())
-		return SendError(ctx, response)
+		return SendError(ctx, http.StatusBadRequest, err)
 	}
 
 	advert := &model.DetailedAdvert{
@@ -147,10 +145,14 @@ func (h *Handler) createAdvert(ctx echo.Context) error {
 		Price:       input.Price,
 	}
 
-	response = h.services.Advert.Create(advert)
-	if response.Code != http.StatusOK {
-		return SendError(ctx, response)
+	advertId, err := h.services.Advert.Create(advert)
+	if err != nil {
+		if err == ErrWrongTitle || err == ErrWrongDescription ||
+			err == ErrWrongPhotos || err == ErrNotPositivePrice {
+			return SendError(ctx, http.StatusBadRequest, err)
+		}
+		return SendError(ctx, http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, response.Data)
+	return ctx.JSON(http.StatusOK, echo.Map{"advert_id": advertId})
 }

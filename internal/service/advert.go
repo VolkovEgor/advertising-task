@@ -1,9 +1,9 @@
 package service
 
 import (
-	"net/http"
 	"time"
 
+	. "github.com/VolkovEgor/advertising-task/internal/error"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
 )
@@ -18,47 +18,38 @@ func NewAdvertService(repo repository.Advert) *AdvertService {
 	return &AdvertService{repo: repo}
 }
 
-func (s *AdvertService) GetAll(page int, sortParams *model.SortParams) *model.ApiResponse {
-	r := &model.ApiResponse{}
-	adverts, err := s.repo.GetAll(page, sortParams)
-	if err != nil {
-		r.Error(http.StatusInternalServerError, err.Error())
-		return r
-	}
-
-	r.Set(http.StatusOK, "OK", Map{"adverts": adverts})
-	return r
+func (s *AdvertService) GetAll(page int, sortParams *model.SortParams) ([]*model.Advert, error) {
+	return s.repo.GetAll(page, sortParams)
 }
 
-func (s *AdvertService) GetById(advertId int, fields bool) *model.ApiResponse {
-	r := &model.ApiResponse{}
-
-	advert, err := s.repo.GetById(advertId, fields)
-	if err != nil {
-		r.Error(http.StatusInternalServerError, err.Error())
-		return r
-	}
-
-	r.Set(http.StatusOK, "OK", Map{"advert": advert})
-	return r
+func (s *AdvertService) GetById(advertId int, fields bool) (*model.DetailedAdvert, error) {
+	return s.repo.GetById(advertId, fields)
 }
 
-func (s *AdvertService) Create(advert *model.DetailedAdvert) *model.ApiResponse {
-	r := &model.ApiResponse{}
+func (s *AdvertService) Create(advert *model.DetailedAdvert) (int, error) {
 
-	if len(advert.Title) > 200 || len(advert.Description) > 1000 || len(advert.Photos) > 3 || advert.Price < 0 {
-		r.Error(http.StatusBadRequest, "Invalid input data")
-		return r
+	if advert.Title == "" || len(advert.Title) > 200 {
+		return 0, ErrWrongTitle
+	}
+
+	if advert.Description == "" || len(advert.Description) > 1000 {
+		return 0, ErrWrongDescription
+	}
+
+	if advert.Photos == nil || len(advert.Photos) > 3 {
+		return 0, ErrWrongPhotos
+	}
+
+	if advert.Price < 0 {
+		return 0, ErrNotPositivePrice
 	}
 
 	advert.CreationDate = time.Now().Unix()
 
 	advertId, err := s.repo.Create(advert)
 	if err != nil {
-		r.Error(http.StatusInternalServerError, err.Error())
-		return r
+		return 0, err
 	}
 
-	r.Set(http.StatusOK, "OK", Map{"advertId": advertId})
-	return r
+	return advertId, nil
 }

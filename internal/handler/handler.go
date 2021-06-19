@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	_ "github.com/VolkovEgor/advertising-task/docs/swagger"
-	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/service"
+	"github.com/sirupsen/logrus"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -49,6 +49,7 @@ func (h *Handler) Init(router *echo.Echo) {
 	}
 }
 
-func SendError(ctx echo.Context, r *model.ApiResponse) error {
-	return ctx.JSON(r.Code, echo.Map{"error": r.Message})
+func SendError(ctx echo.Context, status int, err error) error {
+	logrus.Error(err.Error())
+	return ctx.JSON(status, echo.Map{"error": err.Error()})
 }
