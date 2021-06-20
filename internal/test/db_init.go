@@ -10,13 +10,14 @@ import (
 
 const (
 	UsernameTestDB = "postgres"
-	PasswordTestDB = "1234"
+	PasswordTestDB = "123matan123"
 	HostTestDB     = "localhost"
 	PortTestDB     = "5432"
 	DBnameTestDB   = "postgres_test"
 	SslmodeTestDB  = "disable"
-	UpTestDBFile   = "scripts/000001_init.up.sql"
-	DownTestDBFile = "scripts/000001_init.down.sql"
+	UpTestDBFile   = "migrations/000001_init.up.sql"
+	DownTestDBFile = "migrations/000001_init.down.sql"
+	TestDataDBFile = "scripts/insert_test_data.sql"
 )
 
 func OpenTestDatabase() (*sqlx.DB, error) {
@@ -31,11 +32,19 @@ func PrepareTestDatabase(prefix string) (*sqlx.DB, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	schema, err := ioutil.ReadFile(prefix + UpTestDBFile)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	data, err := ioutil.ReadFile(prefix + TestDataDBFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	db.MustExec(string(down))
 	db.MustExec(string(schema))
+	db.MustExec(string(data))
 	return db, err
 }
