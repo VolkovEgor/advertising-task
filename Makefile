@@ -7,7 +7,7 @@ run:
 	go run $(APP)
 
 # WARNING: before running tests need to create database 'postgres_test' in postgres localhost
-test:
+run_test:
 	go test ./... -cover
 	go test -tags=e2e
 

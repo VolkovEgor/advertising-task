@@ -1,0 +1,65 @@
+name: main
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
+          golangci-lint run
+  swag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate swagger
+        run: |
+          go get -u github.com/swaggo/swag/cmd/swag
+          make swag
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build app
+        run:
+          make build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.15
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Unit Tests & E2E Test
+        run:
+          make run_test
+  
