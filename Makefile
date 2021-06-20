@@ -6,13 +6,17 @@ build:
 run:
 	go run $(APP)
 
-swag:
-	swag init --parseDependency -d ./internal/handler -o ./docs/swagger -g handler.go
-
 # WARNING: before running tests need to create database 'postgres_test' in postgres localhost
 test:
 	go test ./... -cover
 	go test -tags=e2e
+
+lint:
+	go fmt ./...
+	golangci-lint run
+
+swag:
+	swag init --parseDependency -d ./internal/handler -o ./docs/swagger -g handler.go
 
 SCHEMA=./migrations
 DB='postgres://postgres:123matan123@127.0.0.1:5432/advertising_task?sslmode=disable'

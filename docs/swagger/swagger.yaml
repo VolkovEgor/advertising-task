@@ -1,5 +1,10 @@
 basePath: /api/
 definitions:
+  handler.advertIdResponse:
+    properties:
+      advert_id:
+        type: integer
+    type: object
   handler.advertInput:
     properties:
       description:
@@ -13,14 +18,9 @@ definitions:
       title:
         type: string
     type: object
-  handler.idResponse:
+  handler.errorResponse:
     properties:
-      id:
-        type: integer
-    type: object
-  handler.response:
-    properties:
-      message:
+      error:
         type: string
     type: object
   model.Advert:
@@ -85,19 +85,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         default:
           description: ""
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
       summary: Get All Adverts
       tags:
       - adverts
@@ -118,23 +118,23 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.idResponse'
+            $ref: '#/definitions/handler.advertIdResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         default:
           description: ""
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
       summary: Create Advert
       tags:
       - adverts
@@ -163,19 +163,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
         default:
           description: ""
           schema:
-            $ref: '#/definitions/handler.response'
+            $ref: '#/definitions/handler.errorResponse'
       summary: Get Advert By Id
       tags:
       - adverts

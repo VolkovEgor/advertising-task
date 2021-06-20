@@ -29,10 +29,10 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Param page query string true "Page"
 // @Param sort query string false "Sort field and order"
 // @Success 200 {array} model.Advert
-// @Failure 400 {object} response
-// @Failure 404 {object} response
-// @Failure 500 {object} response
-// @Failure default {object} response
+// @Failure 400 {object} errorResponse
+// @Failure 404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
 // @Router /adverts [get]
 func (h *Handler) getAdverts(ctx echo.Context) error {
 	page, err := strconv.Atoi(ctx.QueryParam("page"))
@@ -61,10 +61,10 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 // @Param aid path string true "Advert id"
 // @Param fields query string false "Fields"
 // @Success 200 {object} model.DetailedAdvert
-// @Failure 400 {object} response
-// @Failure 404 {object} response
-// @Failure 500 {object} response
-// @Failure default {object} response
+// @Failure 400 {object} errorResponse
+// @Failure 404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
 // @Router /adverts/{aid} [get]
 func (h *Handler) getAdvertById(ctx echo.Context) error {
 
@@ -104,11 +104,11 @@ type advertInput struct {
 // @Accept  json
 // @Produce  json
 // @Param input body advertInput true "advert input"
-// @Success 200 {object} idResponse
-// @Failure 400 {object} response
-// @Failure 404 {object} response
-// @Failure 500 {object} response
-// @Failure default {object} response
+// @Success 200 {object} advertIdResponse
+// @Failure 400 {object} errorResponse
+// @Failure 404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
 // @Router /adverts [post]
 func (h *Handler) createAdvert(ctx echo.Context) error {
 	var input advertInput
@@ -137,5 +137,5 @@ func (h *Handler) createAdvert(ctx echo.Context) error {
 		return SendError(ctx, http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, echo.Map{"advert_id": advertId})
+	return ctx.JSON(http.StatusOK, advertIdResponse{advertId})
 }

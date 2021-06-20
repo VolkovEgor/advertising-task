@@ -11,12 +11,12 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-type response struct {
-	Message string `json:"message"`
+type errorResponse struct {
+	Error string `json:"error"`
 }
 
-type idResponse struct {
-	Id int `json:"id"`
+type advertIdResponse struct {
+	AdvertId int `json:"advert_id"`
 }
 
 type Handler struct {
@@ -51,5 +51,5 @@ func (h *Handler) Init(router *echo.Echo) {
 
 func SendError(ctx echo.Context, status int, err error) error {
 	logrus.Error(err.Error())
-	return ctx.JSON(status, echo.Map{"error": err.Error()})
+	return ctx.JSON(status, errorResponse{err.Error()})
 }

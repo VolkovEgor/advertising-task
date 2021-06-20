@@ -2,7 +2,7 @@ port: ":9000"
 
 db:
     username: "postgres"
-    password: "1234"
+    password: "123matan123"
     host: "localhost"
     port: "5432"
     dbname: "advertising_task"

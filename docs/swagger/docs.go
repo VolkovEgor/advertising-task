@@ -65,25 +65,25 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "default": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     }
                 }
@@ -115,31 +115,31 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.idResponse"
+                            "$ref": "#/definitions/handler.advertIdResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "default": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     }
                 }
@@ -183,25 +183,25 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     },
                     "default": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/handler.response"
+                            "$ref": "#/definitions/handler.errorResponse"
                         }
                     }
                 }
@@ -209,6 +209,14 @@ var doc = `{
         }
     },
     "definitions": {
+        "handler.advertIdResponse": {
+            "type": "object",
+            "properties": {
+                "advert_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "handler.advertInput": {
             "type": "object",
             "properties": {
@@ -229,18 +237,10 @@ var doc = `{
                 }
             }
         },
-        "handler.idResponse": {
+        "handler.errorResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "handler.response": {
-            "type": "object",
-            "properties": {
-                "message": {
+                "error": {
                     "type": "string"
                 }
             }

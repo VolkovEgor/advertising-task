@@ -28,6 +28,10 @@ func OpenTestDatabase() (*sqlx.DB, error) {
 
 func PrepareTestDatabase(prefix string, insert_data bool) (*sqlx.DB, error) {
 	db, err := OpenTestDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	down, err := ioutil.ReadFile(prefix + DownTestDBFile)
 	if err != nil {
 		log.Fatal(err)
