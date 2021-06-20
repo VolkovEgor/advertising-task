@@ -31,15 +31,15 @@ func TestAdvertPg_GetAll(t *testing.T) {
 		name    string
 		mock    mockBehavior
 		input   args
-		want    []*model.Advert
 		wantErr bool
+		want    []*model.Advert
 	}{
 		{
 			name: "Ok with sorting",
 			input: args{
 				page:      1,
 				sortField: "price",
-				order:     "desc",
+				order:     "asc",
 			},
 			want: []*model.Advert{
 				{

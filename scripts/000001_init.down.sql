@@ -1,1 +1,1 @@
-DROP TABLE adverts
+DROP TABLE IF EXISTS adverts;

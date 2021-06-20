@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS adverts;
 CREATE TABLE IF NOT EXISTS adverts (
     id serial PRIMARY KEY,
     title varchar(200) NOT NULL,

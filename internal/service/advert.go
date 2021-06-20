@@ -79,12 +79,7 @@ func (s *AdvertService) Create(advert *model.DetailedAdvert) (int, error) {
 
 	advert.CreationDate = time.Now().Unix()
 
-	advertId, err := s.repo.Create(advert)
-	if err != nil {
-		return 0, err
-	}
-
-	return advertId, nil
+	return s.repo.Create(advert)
 }
 
 func parseOrder(sort string) string {
