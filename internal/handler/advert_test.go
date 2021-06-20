@@ -107,18 +107,15 @@ func TestAdvertHandler_GetAll(t *testing.T) {
 			service := &service.Service{Advert: repo}
 			handler := Handler{service}
 
-			r := echo.New()
-			api := r.Group("/api")
-			{
-				handler.initAdvertRoutes(api)
-			}
+			app := echo.New()
+			handler.Init(app)
 
 			w := httptest.NewRecorder()
 			target := fmt.Sprintf("/api/adverts?page=%d&sort=%s",
 				test.input.page, test.input.sort)
 			req := httptest.NewRequest("GET", target, nil)
 
-			r.ServeHTTP(w, req)
+			app.ServeHTTP(w, req)
 
 			assert.Equal(t, w.Code, test.expectedStatusCode)
 			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
@@ -208,18 +205,15 @@ func TestAdvertHandler_GetById(t *testing.T) {
 			service := &service.Service{Advert: repo}
 			handler := Handler{service}
 
-			r := echo.New()
-			api := r.Group("/api")
-			{
-				handler.initAdvertRoutes(api)
-			}
+			app := echo.New()
+			handler.Init(app)
 
 			w := httptest.NewRecorder()
 			target := fmt.Sprintf("/api/adverts/%d?fields=%s",
 				test.input.advertId, test.input.fields)
 			req := httptest.NewRequest("GET", target, nil)
 
-			r.ServeHTTP(w, req)
+			app.ServeHTTP(w, req)
 
 			assert.Equal(t, w.Code, test.expectedStatusCode)
 			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
@@ -242,8 +236,9 @@ func TestAdvertHandler_Create(t *testing.T) {
 		expectedResponseBody string
 	}{
 		{
-			name:      "Ok",
-			inputBody: `{"title": "Test Advert", "Description": "Some Description", "photos": ["link1", "link2", "link3"], "price": 10000}`,
+			name: "Ok",
+			inputBody: `{"title": "Test Advert", "Description": "Some Description",` +
+				`"photos": ["link1", "link2", "link3"], "price": 10000}`,
 			input: args{
 				&model.DetailedAdvert{
 					Title:       "Test Advert",
@@ -259,8 +254,9 @@ func TestAdvertHandler_Create(t *testing.T) {
 			expectedResponseBody: `{"advert_id":1}` + "\n",
 		},
 		{
-			name:      "Wrong data",
-			inputBody: `{"": "Test Advert", "Description": "Some Description", "photos": ["link1", "link2", "link3"], "price": 10000}`,
+			name: "Wrong data",
+			inputBody: `{"title": "", "Description": "Some Description",` +
+				`"photos": ["link1", "link2", "link3"], "price": 10000}`,
 			input: args{
 				&model.DetailedAdvert{
 					Title:       "",
@@ -276,8 +272,9 @@ func TestAdvertHandler_Create(t *testing.T) {
 			expectedResponseBody: `{"error":"` + ErrWrongTitle.Error() + `"}` + "\n",
 		},
 		{
-			name:      "Service error",
-			inputBody: `{"title": "Test Advert", "Description": "Some Description", "photos": ["link1", "link2", "link3"], "price": 10000}`,
+			name: "Service error",
+			inputBody: `{"title": "Test Advert", "Description": "Some Description",` +
+				`"photos": ["link1", "link2", "link3"], "price": 10000}`,
 			input: args{
 				&model.DetailedAdvert{
 					Title:       "Test Advert",
@@ -305,18 +302,15 @@ func TestAdvertHandler_Create(t *testing.T) {
 			service := &service.Service{Advert: repo}
 			handler := Handler{service}
 
-			r := echo.New()
-			api := r.Group("/api")
-			{
-				handler.initAdvertRoutes(api)
-			}
+			app := echo.New()
+			handler.Init(app)
 
 			w := httptest.NewRecorder()
 			req := httptest.NewRequest("POST", "/api/adverts",
 				bytes.NewBufferString(test.inputBody))
 			req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
-			r.ServeHTTP(w, req)
+			app.ServeHTTP(w, req)
 
 			assert.Equal(t, w.Code, test.expectedStatusCode)
 			assert.Equal(t, w.Body.String(), test.expectedResponseBody)

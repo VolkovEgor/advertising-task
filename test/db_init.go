@@ -26,7 +26,7 @@ func OpenTestDatabase() (*sqlx.DB, error) {
 	return db, err
 }
 
-func PrepareTestDatabase(prefix string) (*sqlx.DB, error) {
+func PrepareTestDatabase(prefix string, insert_data bool) (*sqlx.DB, error) {
 	db, err := OpenTestDatabase()
 	down, err := ioutil.ReadFile(prefix + DownTestDBFile)
 	if err != nil {
@@ -38,13 +38,16 @@ func PrepareTestDatabase(prefix string) (*sqlx.DB, error) {
 		log.Fatal(err)
 	}
 
-	data, err := ioutil.ReadFile(prefix + TestDataDBFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	db.MustExec(string(down))
 	db.MustExec(string(schema))
-	db.MustExec(string(data))
+
+	if insert_data {
+		data, err := ioutil.ReadFile(prefix + TestDataDBFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		db.MustExec(string(data))
+	}
+
 	return db, err
 }

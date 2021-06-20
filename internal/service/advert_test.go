@@ -7,7 +7,7 @@ import (
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
 	mock_repositories "github.com/VolkovEgor/advertising-task/internal/repository/mocks"
-	"github.com/VolkovEgor/advertising-task/internal/test"
+	"github.com/VolkovEgor/advertising-task/test"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -195,7 +195,7 @@ func TestAdvertService_GetAll(t *testing.T) {
 
 func TestAdvertService_GetById(t *testing.T) {
 	const prefix = "../../"
-	db, err := test.PrepareTestDatabase(prefix)
+	db, err := test.PrepareTestDatabase(prefix, true)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
