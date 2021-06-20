@@ -36,7 +36,7 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Router /adverts [get]
 func (h *Handler) getAdverts(ctx echo.Context) error {
 	page, err := strconv.Atoi(ctx.QueryParam("page"))
-	if err != nil || page == 0 {
+	if err != nil || page <= 0 {
 		return SendError(ctx, http.StatusBadRequest, ErrWrongPageNumber)
 	}
 
@@ -69,7 +69,7 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 func (h *Handler) getAdvertById(ctx echo.Context) error {
 
 	advertId, err := strconv.Atoi(ctx.Param("aid"))
-	if err != nil || advertId == 0 {
+	if err != nil || advertId <= 0 {
 		return SendError(ctx, http.StatusBadRequest, ErrWrongAdvertId)
 	}
 
