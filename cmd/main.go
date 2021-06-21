@@ -18,13 +18,15 @@ func main() {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
+	dbPrefix := viper.GetString("db.name") + "."
+
 	db, err := postgres.NewPostgresDB(postgres.Config{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
-		Username: viper.GetString("db.username"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
-		Password: viper.GetString("db.password"),
+		Host:     viper.GetString(dbPrefix + "host"),
+		Port:     viper.GetString(dbPrefix + "port"),
+		Username: viper.GetString(dbPrefix + "username"),
+		DBName:   viper.GetString(dbPrefix + "dbname"),
+		SSLMode:  viper.GetString(dbPrefix + "sslmode"),
+		Password: viper.GetString(dbPrefix + "password"),
 	})
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())

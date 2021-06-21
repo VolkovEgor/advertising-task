@@ -57,7 +57,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: 1234
         ports:
-            - 5432:5432
+            - 5436:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -75,7 +75,7 @@ jobs:
       
       - name: Create database
         run: |
-          PGPASSWORD=1234 psql -U postgres -h localhost -tc "CREATE DATABASE postgres_test"
+          PGPASSWORD=1234 psql -U postgres -h localhost -p 5436 -tc "CREATE DATABASE postgres_test"
 
       - name: Unit Tests & E2E Test
         run:

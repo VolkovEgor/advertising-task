@@ -1,9 +1,21 @@
 port: ":9000"
 
 db:
-    username: "postgres"
-    password: "1234"
-    host: "db"
-    port: "5432"
-    dbname: "postgres"
-    sslmode: "disable"
+#   name: "local_db"
+  name: "docker_db"
+
+local_db:
+  username: "postgres"
+  password: "1234"
+  host: "localhost"
+  port: "5432"
+  dbname: "advertising_task"
+  sslmode: "disable"
+
+docker_db:
+  username: "postgres"
+  password: "1234"
+  host: "db"
+  port: "5432"
+  dbname: "postgres"
+  sslmode: "disable"
