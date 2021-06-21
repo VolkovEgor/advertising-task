@@ -10,7 +10,7 @@ import (
 
 const (
 	UsernameTestDB = "postgres"
-	PasswordTestDB = "123matan123"
+	PasswordTestDB = "1234"
 	HostTestDB     = "localhost"
 	PortTestDB     = "5432"
 	DBnameTestDB   = "postgres_test"
