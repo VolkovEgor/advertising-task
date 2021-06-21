@@ -1,5 +1,11 @@
 APP=cmd/main.go
 
+docker_build:
+	docker-compose build app
+
+docker_run:
+	docker-compose up app
+
 build:
 	go build -o bin/app.out $(APP)
 
@@ -19,7 +25,7 @@ swag:
 	swag init --parseDependency -d ./internal/handler -o ./docs/swagger -g handler.go
 
 SCHEMA=./migrations
-DB='postgres://postgres:123matan123@127.0.0.1:5432/advertising_task?sslmode=disable'
+DB='postgres://postgres:1234@127.0.0.1:5436/postgres?sslmode=disable'
 
 migrate_up:
 	migrate -path $(SCHEMA) -database $(DB) up
@@ -28,4 +34,4 @@ migrate_down:
 	migrate -path $(SCHEMA) -database $(DB) down
 
 insert_test_data:
-	pgpassword=123matan123 psql -h localhost -U postgres -d advertising_task -f ./scripts/insert_test_data.sql
+	pgpassword=1234 psql -h localhost -p 5436 -U postgres -d postgres -f ./scripts/insert_test_data.sql

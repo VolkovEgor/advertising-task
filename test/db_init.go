@@ -12,7 +12,7 @@ const (
 	UsernameTestDB = "postgres"
 	PasswordTestDB = "1234"
 	HostTestDB     = "localhost"
-	PortTestDB     = "5432"
+	PortTestDB     = "5436"
 	DBnameTestDB   = "postgres_test"
 	SslmodeTestDB  = "disable"
 	UpTestDBFile   = "migrations/000001_init.up.sql"

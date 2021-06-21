@@ -2,8 +2,8 @@ port: ":9000"
 
 db:
     username: "postgres"
-    password: "123matan123"
-    host: "localhost"
+    password: "1234"
+    host: "db"
     port: "5432"
-    dbname: "advertising_task"
+    dbname: "postgres"
     sslmode: "disable"
