@@ -24,8 +24,8 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 // @Tags adverts
 // @Description Get all adverts
 // @ModuleID getAllAdverts
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Param page query string true "Page"
 // @Param sort query string false "Sort field and order"
 // @Success 200 {array} model.Advert
@@ -56,8 +56,8 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 // @Tags adverts
 // @Description Get advert by id
 // @ModuleID getAdvertById
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Param aid path string true "Advert id"
 // @Param fields query string false "Fields"
 // @Success 200 {object} model.DetailedAdvert
@@ -67,7 +67,6 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 // @Failure default {object} errorResponse
 // @Router /adverts/{aid} [get]
 func (h *Handler) getAdvertById(ctx echo.Context) error {
-
 	advertId, err := strconv.Atoi(ctx.Param("aid"))
 	if err != nil || advertId <= 0 {
 		return SendError(ctx, http.StatusBadRequest, ErrWrongAdvertId)
@@ -101,8 +100,8 @@ type advertInput struct {
 // @Tags adverts
 // @Description Create advert
 // @ModuleID createAdvert
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Param input body advertInput true "advert input"
 // @Success 200 {object} advertIdResponse
 // @Failure 400 {object} errorResponse

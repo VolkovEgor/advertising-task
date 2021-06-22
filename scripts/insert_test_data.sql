@@ -4,10 +4,10 @@ INSERT INTO adverts (title, description, photos, price, creation_date)
 VALUES ('Advert 1', 'Description 1', '{"link1", "link2", "link3"}', 10000, 1);
 
 INSERT INTO adverts (title, description, photos, price, creation_date)
-VALUES ('Advert 2', 'Description 2', '{"link1", "link2"}', 30000, 2);
+VALUES ('Advert 2', 'Description 2', '{"link1", "link2"}', 60000, 2);
 
 INSERT INTO adverts (title, description, photos, price, creation_date)
-VALUES ('Advert 3', 'Description 3', '{"link1", "link2", "link3"}', 60000, 3);
+VALUES ('Advert 3', 'Description 3', '{"link1", "link2", "link3"}', 30000, 3);
 
 INSERT INTO adverts (title, description, photos, price, creation_date)
 VALUES ('Advert 4', 'Description 4', '{"link1", "link2", "link3"}', 50000, 4);
