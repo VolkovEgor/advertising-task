@@ -61,7 +61,7 @@
 ```
 
 # Архитектура
-![Схема](.\docs\img\architecture.png)
+![Схема](https://github.com/VolkovEgor/advertising-task/blob/develop/docs/img/architecture.jpg)
 
 Приложение имеет 3 основных слоя, реализованных в отдельных пакетах.
 
