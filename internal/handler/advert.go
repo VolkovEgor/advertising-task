@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	. "github.com/VolkovEgor/advertising-task/internal/error"
+	errMes "github.com/VolkovEgor/advertising-task/internal/error_message"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/asaskevich/govalidator"
 
@@ -37,13 +37,13 @@ func (h *Handler) initAdvertRoutes(api *echo.Group) {
 func (h *Handler) getAdverts(ctx echo.Context) error {
 	page, err := strconv.Atoi(ctx.QueryParam("page"))
 	if err != nil || page <= 0 {
-		return SendError(ctx, http.StatusBadRequest, ErrWrongPageNumber)
+		return SendError(ctx, http.StatusBadRequest, errMes.ErrWrongPageNumber)
 	}
 
 	sort := ctx.QueryParam("sort")
 	adverts, err := h.services.Advert.GetAll(page, sort)
 	if err != nil {
-		if err == ErrWrongSortParams {
+		if err == errMes.ErrWrongSortParams {
 			return SendError(ctx, http.StatusBadRequest, err)
 		}
 		return SendError(ctx, http.StatusInternalServerError, err)
@@ -69,7 +69,7 @@ func (h *Handler) getAdverts(ctx echo.Context) error {
 func (h *Handler) getAdvertById(ctx echo.Context) error {
 	advertId, err := strconv.Atoi(ctx.Param("aid"))
 	if err != nil || advertId <= 0 {
-		return SendError(ctx, http.StatusBadRequest, ErrWrongAdvertId)
+		return SendError(ctx, http.StatusBadRequest, errMes.ErrWrongAdvertId)
 	}
 
 	var boolFields bool
@@ -77,7 +77,7 @@ func (h *Handler) getAdvertById(ctx echo.Context) error {
 	if fields != "" {
 		boolFields, err = strconv.ParseBool(fields)
 		if err != nil {
-			return SendError(ctx, http.StatusBadRequest, ErrWrongFieldsParam)
+			return SendError(ctx, http.StatusBadRequest, errMes.ErrWrongFieldsParam)
 		}
 	}
 
@@ -129,8 +129,8 @@ func (h *Handler) createAdvert(ctx echo.Context) error {
 
 	advertId, err := h.services.Advert.Create(advert)
 	if err != nil {
-		if err == ErrWrongTitle || err == ErrWrongDescription ||
-			err == ErrWrongPhotos || err == ErrNotPositivePrice {
+		if err == errMes.ErrWrongTitle || err == errMes.ErrWrongDescription ||
+			err == errMes.ErrWrongPhotos || err == errMes.ErrNotPositivePrice {
 			return SendError(ctx, http.StatusBadRequest, err)
 		}
 		return SendError(ctx, http.StatusInternalServerError, err)

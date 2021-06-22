@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"testing"
 
-	. "github.com/VolkovEgor/advertising-task/internal/error"
+	errMes "github.com/VolkovEgor/advertising-task/internal/error_message"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/service"
 	mock_service "github.com/VolkovEgor/advertising-task/internal/service/mocks"
@@ -67,10 +67,10 @@ func TestAdvertHandler_GetAll(t *testing.T) {
 				sort: "price_ascc",
 			},
 			mockBehavior: func(r *mock_service.MockAdvert, args args) {
-				r.EXPECT().GetAll(args.page, args.sort).Return(nil, ErrWrongSortParams)
+				r.EXPECT().GetAll(args.page, args.sort).Return(nil, errMes.ErrWrongSortParams)
 			},
 			expectedStatusCode:   400,
-			expectedResponseBody: `{"error":"` + ErrWrongSortParams.Error() + `"}` + "\n",
+			expectedResponseBody: `{"error":"` + errMes.ErrWrongSortParams.Error() + `"}` + "\n",
 		},
 		{
 			name: "Wrong page number",
@@ -80,7 +80,7 @@ func TestAdvertHandler_GetAll(t *testing.T) {
 			},
 			mockBehavior:         func(r *mock_service.MockAdvert, args args) {},
 			expectedStatusCode:   400,
-			expectedResponseBody: `{"error":"` + ErrWrongPageNumber.Error() + `"}` + "\n",
+			expectedResponseBody: `{"error":"` + errMes.ErrWrongPageNumber.Error() + `"}` + "\n",
 		},
 		{
 			name: "Service error",
@@ -167,7 +167,7 @@ func TestAdvertHandler_GetById(t *testing.T) {
 			},
 			mockBehavior:         func(r *mock_service.MockAdvert, args args) {},
 			expectedStatusCode:   400,
-			expectedResponseBody: `{"error":"` + ErrWrongAdvertId.Error() + `"}` + "\n",
+			expectedResponseBody: `{"error":"` + errMes.ErrWrongAdvertId.Error() + `"}` + "\n",
 		},
 		{
 			name: "Wrong fields",
@@ -177,7 +177,7 @@ func TestAdvertHandler_GetById(t *testing.T) {
 			},
 			mockBehavior:         func(r *mock_service.MockAdvert, args args) {},
 			expectedStatusCode:   400,
-			expectedResponseBody: `{"error":"` + ErrWrongFieldsParam.Error() + `"}` + "\n",
+			expectedResponseBody: `{"error":"` + errMes.ErrWrongFieldsParam.Error() + `"}` + "\n",
 		},
 		{
 			name: "Service error",
@@ -266,10 +266,10 @@ func TestAdvertHandler_Create(t *testing.T) {
 				},
 			},
 			mockBehavior: func(r *mock_service.MockAdvert, args args) {
-				r.EXPECT().Create(args.advert).Return(0, ErrWrongTitle)
+				r.EXPECT().Create(args.advert).Return(0, errMes.ErrWrongTitle)
 			},
 			expectedStatusCode:   400,
-			expectedResponseBody: `{"error":"` + ErrWrongTitle.Error() + `"}` + "\n",
+			expectedResponseBody: `{"error":"` + errMes.ErrWrongTitle.Error() + `"}` + "\n",
 		},
 		{
 			name: "Service error",

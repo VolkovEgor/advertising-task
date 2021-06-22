@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	. "github.com/VolkovEgor/advertising-task/internal/error"
+	errMes "github.com/VolkovEgor/advertising-task/internal/error_message"
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
 )
@@ -40,7 +40,7 @@ func (s *AdvertService) GetAll(page int, sort string) ([]*model.Advert, error) {
 			order = parseOrder(sort)
 
 		default:
-			return nil, ErrWrongSortParams
+			return nil, errMes.ErrWrongSortParams
 		}
 	}
 
@@ -50,7 +50,7 @@ func (s *AdvertService) GetAll(page int, sort string) ([]*model.Advert, error) {
 	}
 
 	if adverts == nil {
-		return nil, ErrWrongPageNumber
+		return nil, errMes.ErrWrongPageNumber
 	}
 
 	return adverts, nil
@@ -62,19 +62,19 @@ func (s *AdvertService) GetById(advertId int, fields bool) (*model.DetailedAdver
 
 func (s *AdvertService) Create(advert *model.DetailedAdvert) (int, error) {
 	if advert.Title == "" || len(advert.Title) > 200 {
-		return 0, ErrWrongTitle
+		return 0, errMes.ErrWrongTitle
 	}
 
 	if advert.Description == "" || len(advert.Description) > 1000 {
-		return 0, ErrWrongDescription
+		return 0, errMes.ErrWrongDescription
 	}
 
 	if advert.Photos == nil || len(advert.Photos) > 3 {
-		return 0, ErrWrongPhotos
+		return 0, errMes.ErrWrongPhotos
 	}
 
 	if advert.Price < 0 {
-		return 0, ErrNotPositivePrice
+		return 0, errMes.ErrNotPositivePrice
 	}
 
 	advert.CreationDate = time.Now().Unix()
