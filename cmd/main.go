@@ -1,12 +1,19 @@
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/VolkovEgor/advertising-task/internal/handler"
 	"github.com/VolkovEgor/advertising-task/internal/repository"
 	"github.com/VolkovEgor/advertising-task/internal/repository/postgres"
 	"github.com/VolkovEgor/advertising-task/internal/service"
+	"github.com/sirupsen/logrus"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -15,7 +22,7 @@ import (
 
 func main() {
 	if err := initConfig(); err != nil {
-		log.Fatalf("error initializing configs: %s", err.Error())
+		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
 	dbPrefix := viper.GetString("db.name") + "."
@@ -29,7 +36,7 @@ func main() {
 		Password: viper.GetString(dbPrefix + "password"),
 	})
 	if err != nil {
-		log.Fatalf("failed to initialize db: %s", err.Error())
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)
@@ -40,8 +47,28 @@ func main() {
 	app.Use(middleware.Logger())
 	handlers.Init(app)
 
-	if err := app.Start(viper.GetString("port")); err != nil {
-		log.Fatalf("failed to listen: %s", err.Error())
+	go func() {
+		if err := app.Start(viper.GetString("port")); err != nil && err != http.ErrServerClosed {
+			logrus.Fatalf("failed to listen: %s", err.Error())
+		}
+	}()
+
+	log.Println("App started")
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	log.Println("Gracefully shutting down...")
+	if err := app.Shutdown(ctx); err != nil {
+		logrus.Errorf("error occured on server shutting down: %s", err.Error())
+	}
+
+	if err := db.Close(); err != nil {
+		logrus.Errorf("error occured on db connection close: %s", err.Error())
 	}
 }
 

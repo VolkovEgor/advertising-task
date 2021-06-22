@@ -37,6 +37,7 @@
 - Работа с фреймворком [echo](https://echo.labstack.com/).
 - Работа с БД Postgres с использованием библиотеки [sqlx](https://github.com/jmoiron/sqlx) и написанием SQL запросов.
 - Конфигурация приложения - библиотека [viper](https://github.com/spf13/viper).
+- Реализация Graceful Shutdown.
 - Запуск из Docker.
 - Юнит-тестирование уровней обработчиков, бизнес-логики и взаимодействия с БД классическим способом и с помощью моков - библиотеки [testify](https://github.com/stretchr/testify), [mock](https://github.com/golang/mock).
 - Сквозное (E2E) тестирование - BDD фреймворк [goconvey](https://github.com/smartystreets/goconvey).
