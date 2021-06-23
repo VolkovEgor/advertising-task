@@ -14,12 +14,12 @@ RUN apt-get -y install postgresql-client
 RUN go mod download -x
 
 # build go app
-RUN go build -o main ./cmd/main.go
+RUN go build -o app ./cmd/main.go
 
 # swagger
 RUN go get -u github.com/swaggo/swag/cmd/swag
 RUN make swag
 
-CMD ["./main"]
+CMD ./app docker_config
 
 

@@ -10,7 +10,7 @@ local_build:
 	go build -o bin/app.out $(APP)
 
 local_run:
-	go run $(APP)
+	go run $(APP) local_config
 
 # WARNING: before running tests need to create database 'postgres_test' in postgres localhost
 run_test:

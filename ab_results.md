@@ -1,7 +1,7 @@
 ## Нагрузочное тестирование
 
 ```
-$ ab -c 10 -n 10000 localhost:9001/api/adverts?page=1
+$ ab -c 10 -n 10000 localhost:9000/api/adverts?page=1
 This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -11,7 +11,7 @@ Benchmarking localhost (be patient)
 
 Server Software:        
 Server Hostname:        localhost
-Server Port:            9001
+Server Port:            9000
 
 Document Path:          /api/adverts?page=1
 Document Length:        643 bytes

@@ -102,6 +102,8 @@ make run
 make migrate_up
 ```
 
+Для миграций используется [golang-migrate/migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation).
+
 # Тестирование
 
 Локальный запуск тестов:
@@ -115,7 +117,7 @@ make create_test_db
 ```
 # Документация
 
-Для просмотра документации Swagger необходимо запустить приложение и перейти по ссылке [http://127.0.0.1:9001/swagger/index.html](http://127.0.0.1:9001/swagger/index.html) 
+Для просмотра документации Swagger необходимо запустить приложение и перейти по ссылке [http://127.0.0.1:9000/swagger/index.html](http://127.0.0.1:9000/swagger/index.html) 
 
 # Нагрузочное тестирование
 
@@ -132,7 +134,7 @@ make create_test_db
 
 **Запрос:**
 ```
-$ curl GET localhost:9001/api/adverts?page=1
+$ curl GET localhost:9000/api/adverts?page=1
 ```
 **Тело ответа:**
 ```
@@ -162,7 +164,7 @@ $ curl GET localhost:9001/api/adverts?page=1
 
 **Запрос:**
 ```
-$ curl GET localhost:9001/api/adverts?page=1&sort=price_asc
+$ curl GET localhost:9000/api/adverts?page=1&sort=price_asc
 ```
 **Тело ответа:**
 ```
@@ -192,7 +194,7 @@ $ curl GET localhost:9001/api/adverts?page=1&sort=price_asc
 
 **Запрос:**
 ```
-$ curl GET localhost:9001/api/adverts?page=1&sort=date_desc
+$ curl GET localhost:9000/api/adverts?page=1&sort=date_desc
 ```
 **Тело ответа:**
 ```
@@ -224,7 +226,7 @@ $ curl GET localhost:9001/api/adverts?page=1&sort=date_desc
 
 **Запрос:**
 ```
-$ curl GET localhost:9001/api/adverts/1
+$ curl GET localhost:9000/api/adverts/1
 ```
 **Тело ответа:**
 ```
@@ -241,7 +243,7 @@ $ curl GET localhost:9001/api/adverts/1
 
 **Запрос:**
 ```
-$ curl GET localhost:9001/api/adverts/1?fields=true
+$ curl GET localhost:9000/api/adverts/1?fields=true
 ```
 **Тело ответа:**
 ```
@@ -262,7 +264,7 @@ $ curl GET localhost:9001/api/adverts/1?fields=true
 
 **Запрос:**
 ```
-$ curl --location --request POST 'localhost:9001/api/adverts' \
+$ curl --location --request POST 'localhost:9000/api/adverts' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "title": "New advert",

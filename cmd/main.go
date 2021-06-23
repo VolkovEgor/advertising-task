@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -21,19 +22,22 @@ import (
 )
 
 func main() {
-	if err := initConfig(); err != nil {
+	if len(os.Args) < 2 {
+		logrus.Fatalf("Usage: %v config_filename\n", os.Args[0])
+	}
+	fmt.Println(os.Args[1])
+
+	if err := initConfig(os.Args[1]); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	dbPrefix := viper.GetString("db.name") + "."
-
 	db, err := postgres.NewPostgresDB(postgres.Config{
-		Host:     viper.GetString(dbPrefix + "host"),
-		Port:     viper.GetString(dbPrefix + "port"),
-		Username: viper.GetString(dbPrefix + "username"),
-		DBName:   viper.GetString(dbPrefix + "dbname"),
-		SSLMode:  viper.GetString(dbPrefix + "sslmode"),
-		Password: viper.GetString(dbPrefix + "password"),
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.sslmode"),
+		Password: viper.GetString("db.password"),
 	})
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
@@ -72,8 +76,8 @@ func main() {
 	}
 }
 
-func initConfig() error {
+func initConfig(filename string) error {
 	viper.AddConfigPath("config")
-	viper.SetConfigName("config")
+	viper.SetConfigName(filename)
 	return viper.ReadInConfig()
 }

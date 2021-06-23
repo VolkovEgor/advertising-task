@@ -47,7 +47,7 @@ jobs:
 
       - name: Build app
         run:
-          make build
+          make local_build
   test:
     runs-on: ubuntu-latest
 
