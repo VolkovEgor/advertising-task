@@ -1,0 +1,182 @@
+basePath: /api/
+definitions:
+  handler.advertIdResponse:
+    properties:
+      advert_id:
+        type: integer
+    type: object
+  handler.advertInput:
+    properties:
+      description:
+        type: string
+      photos:
+        items:
+          type: string
+        type: array
+      price:
+        type: integer
+      title:
+        type: string
+    type: object
+  handler.errorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  model.Advert:
+    properties:
+      id:
+        type: integer
+      main_photo:
+        type: string
+      price:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.DetailedAdvert:
+    properties:
+      creation_date:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      photos:
+        items:
+          type: string
+        type: array
+      price:
+        type: integer
+      title:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: API Server for Advertising Task
+  title: Advertising Task
+  version: "1.0"
+paths:
+  /adverts:
+    get:
+      consumes:
+      - application/json
+      description: Get all adverts
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: Sort field and order
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Advert'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get All Adverts
+      tags:
+      - adverts
+    post:
+      consumes:
+      - application/json
+      description: Create advert
+      parameters:
+      - description: advert input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.advertInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.advertIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create Advert
+      tags:
+      - adverts
+  /adverts/{aid}:
+    get:
+      consumes:
+      - application/json
+      description: Get advert by id
+      parameters:
+      - description: Advert id
+        in: path
+        name: aid
+        required: true
+        type: string
+      - description: Fields
+        in: query
+        name: fields
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DetailedAdvert'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get Advert By Id
+      tags:
+      - adverts
+swagger: "2.0"

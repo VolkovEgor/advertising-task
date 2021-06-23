@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    restart: always
+    build: ./
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=1234
+
+  db:
+    restart: always
+    image: postgres:alpine
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - 5436:5432
