@@ -56,8 +56,8 @@ func TestAdvertPg_GetAll(t *testing.T) {
 				},
 			},
 			mock: func(args args) {
-				rows := sqlmock.NewRows([]string{"a.id", "a.title",
-					"a.photos", "a.price"}).
+				rows := sqlmock.NewRows([]string{"id", "title",
+					"main_photo", "price"}).
 					AddRow(1, "First Advert", "link1", 10000).
 					AddRow(2, "Second Advert", "link2", 30000)
 				mock.ExpectQuery("SELECT (.+) FROM adverts").
@@ -86,8 +86,8 @@ func TestAdvertPg_GetAll(t *testing.T) {
 				},
 			},
 			mock: func(args args) {
-				rows := sqlmock.NewRows([]string{"a.id", "a.title",
-					"a.photos", "a.price"}).
+				rows := sqlmock.NewRows([]string{"id", "title",
+					"main_photo", "price"}).
 					AddRow(1, "First Ad", "link1", 10000).
 					AddRow(2, "Second Ad", "link2", 30000)
 				mock.ExpectQuery("SELECT (.+) FROM adverts").
