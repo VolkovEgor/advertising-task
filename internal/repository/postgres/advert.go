@@ -1,14 +1,13 @@
 package postgres
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/VolkovEgor/advertising-task/internal/model"
-	"github.com/lib/pq"
-
-	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 )
 
 const (

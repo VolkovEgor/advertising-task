@@ -6,8 +6,8 @@ import (
 
 	errMes "github.com/VolkovEgor/advertising-task/internal/error_message"
 	"github.com/VolkovEgor/advertising-task/internal/model"
-	"github.com/asaskevich/govalidator"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/labstack/echo/v4"
 )
 

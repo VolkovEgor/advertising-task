@@ -5,9 +5,9 @@ import (
 
 	_ "github.com/VolkovEgor/advertising-task/docs/swagger"
 	"github.com/VolkovEgor/advertising-task/internal/service"
-	"github.com/sirupsen/logrus"
 
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -29,7 +29,7 @@ func NewHandler(services *service.Service) *Handler {
 	}
 }
 
-// @title Advertising Task
+// @title Advertising Task API
 // @version 1.0
 // @description API Server for Advertising Task
 

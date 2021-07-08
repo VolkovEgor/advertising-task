@@ -12,9 +12,9 @@ import (
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/service"
 	mock_service "github.com/VolkovEgor/advertising-task/internal/service/mocks"
-	"github.com/labstack/echo/v4"
 
 	"github.com/golang/mock/gomock"
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
 

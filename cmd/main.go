@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -25,7 +24,6 @@ func main() {
 	if len(os.Args) < 2 {
 		logrus.Fatalf("Usage: %v config_filename\n", os.Args[0])
 	}
-	fmt.Println(os.Args[1])
 
 	if err := initConfig(os.Args[1]); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())

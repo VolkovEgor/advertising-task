@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/VolkovEgor/advertising-task/internal/model"
 	"github.com/VolkovEgor/advertising-task/internal/repository/postgres"
+
 	"github.com/jmoiron/sqlx"
 )
 
