@@ -1,4 +1,3 @@
-  
 FROM golang:latest
 
 RUN go version
@@ -21,5 +20,3 @@ RUN go get -u github.com/swaggo/swag/cmd/swag
 RUN make swag
 
 CMD ./app docker_config
-
-
